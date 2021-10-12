@@ -1,3 +1,4 @@
+using AuthenticationService.Application;
 using AuthenticationService.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,13 +21,11 @@ namespace AuthenticationService
         {
             services.AddAuthentication();
             services.AddAuthorization();
-            services.ConfigureAutoMapper();
-            services.ConfigureMediatR();
             services.ConfigureCors();
             services.ConfigureManagers();
             services.ConfigureIdentity();
             services.ConfigureSqlContext(Configuration);
-            services.ConfigureValidators();
+            services.AddAuthenticationServiceApplication();
             services.ConfigureSwagger();
             services.AddControllers(config =>
             {
@@ -41,7 +40,7 @@ namespace AuthenticationService
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.ConfigureExceptionHandler();
+            //app.ConfigureExceptionHandler();
             app.UseHttpsRedirection();
             app.UseCors("CorsPolicy");
 

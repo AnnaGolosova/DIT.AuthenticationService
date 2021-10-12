@@ -1,5 +1,5 @@
 ﻿using AuthenticationService.Application.Commands.Abstractions;
-using AuthenticationService.Application.Validation.Abstractions;
+using AuthenticationService.Application.Validation.Abstractions.Interfaces;
 using AuthenticationService.Contracts.Incoming;
 using FluentValidation;
 
@@ -8,8 +8,11 @@ namespace AuthenticationService.Application.Validation
     public class RegistrationValidator<TCommand, TResponse> : AbstractValidator<TCommand>
         where TCommand : BaseCommand<RegistrationUserDto, TResponse>
     {
-        public RegistrationValidator()
+        private readonly IValidationConditions _validateConditions;
+
+        public RegistrationValidator(IValidationConditions validateConditions)
         {
+            _validateConditions = validateConditions;
             CreateRules();
         }
 
@@ -20,19 +23,19 @@ namespace AuthenticationService.Application.Validation
                 .WithMessage(cmd => "Entity is invalid");
 
             RuleFor(cmd => cmd.Entity.Username)
-                .Must(ValidationConditions.IsNotNullOrWhitespace)
+                .Must(_validateConditions.IsNotNullOrWhitespace)
                 .WithMessage(cmd => "Username is required field");
 
             RuleFor(cmd => cmd.Entity.Password)
-                .Must(ValidationConditions.IsValidPassword)
+                .Must(_validateConditions.IsValidPassword)
                 .WithMessage(cmd => "Password must contain upper letter and digit");
 
             RuleFor(cmd => cmd.Entity.Email)
-                .Must(ValidationConditions.IsValidEmail)
+                .Must(_validateConditions.IsValidEmail)
                 .WithMessage(cmd => "Invalid email address");
 
             RuleFor(cmd => cmd.Entity.Roles)
-                .Must(ValidationConditions.IsValidRoles)
+                .Must(_validateConditions.RolesExists)
                 .WithMessage(cmd => $"Invalid roles. Possible roles: Administrator, Moderator and User");
         }
     }

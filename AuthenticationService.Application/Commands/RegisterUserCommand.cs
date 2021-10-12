@@ -3,7 +3,6 @@ using AuthenticationService.Contracts.Incoming;
 using AuthenticationService.Contracts.Outgoing.Abstractions;
 using AuthenticationService.Domain.Models;
 using AuthenticationService.Interfaces;
-using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System.Threading;
@@ -20,27 +19,38 @@ namespace AuthenticationService.Application.Commands
     {
         private readonly IAuthenticationManager _authenticationManager;
         private readonly UserManager<User> _userManager;
-        private readonly IMapper _mapper;
 
-        public RegisterUserCommandHandler(
-            IAuthenticationManager authenticationManager,
-            UserManager<User> userManager,
-            IMapper mapper)
+        public RegisterUserCommandHandler(IAuthenticationManager authenticationManager,
+            UserManager<User> userManager)
         {
             _authenticationManager = authenticationManager;
             _userManager = userManager;
-            _mapper = mapper;
         }
 
         public async Task<Response> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             var userForRegistration = request.Entity;
 
-            var user = _mapper.Map<User>(userForRegistration);
+            var user = MapRegistrationUserDtoToUser(userForRegistration);
+
+            var result = await _userManager.CreateAsync(user, userForRegistration.Password);
+            if (result.Succeeded == false)
+            {
+                throw new System.Exception(result.Errors.ToString());
+            }
 
             await _userManager.AddToRolesAsync(user, userForRegistration.Roles);
 
             return Response.Successfull;
+        }
+
+        private User MapRegistrationUserDtoToUser(RegistrationUserDto userForRegistration)
+        {
+            return new User()
+            {
+                Email = userForRegistration.Email,
+                UserName = userForRegistration.Username,
+            };
         }
     }
 }

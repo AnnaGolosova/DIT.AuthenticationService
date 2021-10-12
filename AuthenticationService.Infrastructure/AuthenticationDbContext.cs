@@ -1,4 +1,5 @@
 ﻿using AuthenticationService.Domain.Models;
+using AuthenticationService.Infrastructure.Configuration;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,8 @@ namespace AuthenticationService.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using AuthenticationService.Application.Commands.Abstractions;
-using AuthenticationService.Application.Validation.Abstractions;
+using AuthenticationService.Application.Validation.Abstractions.Interfaces;
 using AuthenticationService.Contracts.Incoming;
 using FluentValidation;
 
@@ -8,8 +8,11 @@ namespace AuthenticationService.Application.Validation
     public class AuthenticationValidator<TCommand, TResponse> : AbstractValidator<TCommand>
         where TCommand : BaseCommand<AuthenticationUserDto, TResponse>
     {
-        public AuthenticationValidator()
+        private readonly IValidationConditions _validateConditions;
+
+        public AuthenticationValidator(IValidationConditions validateConditions)
         {
+            _validateConditions = validateConditions;
             CreateRules();
         }
 
@@ -20,11 +23,11 @@ namespace AuthenticationService.Application.Validation
                 .WithMessage(cmd => "Entity is invalid");
 
             RuleFor(cmd => cmd.Entity.Username)
-                .Must(ValidationConditions.IsNotNullOrWhitespace)
+                .Must(_validateConditions.IsNotNullOrWhitespace)
                 .WithMessage(cmd => "Username is required field");
 
             RuleFor(cmd => cmd.Entity.Password)
-                .Must(ValidationConditions.IsValidPassword)
+                .Must(_validateConditions.IsValidPassword)
                 .WithMessage(cmd => "Password must contain upper letter and digit");
         }
     }

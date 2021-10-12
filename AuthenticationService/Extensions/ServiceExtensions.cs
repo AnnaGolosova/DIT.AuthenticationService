@@ -1,10 +1,7 @@
-﻿using AuthenticationService.Application.Validation.Abstractions;
-using AuthenticationService.Domain.Models;
+﻿using AuthenticationService.Domain.Models;
 using AuthenticationService.Infrastructure;
 using AuthenticationService.Interfaces;
 using AuthenticationService.Services;
-using FluentValidation;
-using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -16,7 +13,6 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -85,11 +81,11 @@ namespace AuthenticationService.Extensions
         {
             var builder = services.AddIdentityCore<User>(o =>
             {
-                o.Password.RequireDigit = false;
+                o.Password.RequireDigit = true;
                 o.Password.RequireLowercase = false;
-                o.Password.RequireUppercase = false;
+                o.Password.RequireUppercase = true;
                 o.Password.RequireNonAlphanumeric = false;
-                o.Password.RequiredLength = 6;
+                o.Password.RequiredLength = 8;
                 o.User.RequireUniqueEmail = true;
             });
 
@@ -105,8 +101,6 @@ namespace AuthenticationService.Extensions
             services.AddScoped<IAuthenticationManager, AuthenticationManager>();
         }
 
-        public static void ConfigureAutoMapper(this IServiceCollection services) =>
-            services.AddAutoMapper(typeof(Startup));
 
         public static void ConfigureSwagger(this IServiceCollection services)
         {
@@ -148,27 +142,5 @@ namespace AuthenticationService.Extensions
                 });
             });
         }
-
-        public static void ConfigureValidators(this IServiceCollection services)
-        {
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-
-            services.Scan(x =>
-            {
-                var entryAssembly = Assembly.GetEntryAssembly();
-                IEnumerable<Assembly> referencedAssemblies = entryAssembly.GetReferencedAssemblies().Select(Assembly.Load);
-                IEnumerable<Assembly> assemblies = new List<Assembly> { entryAssembly }.Concat(referencedAssemblies);
-
-                x.FromAssemblies(assemblies)
-                    .AddClasses(classes => classes.AssignableTo(typeof(IValidator<>)))
-                    .AsImplementedInterfaces()
-                    .WithScopedLifetime();
-            });
-
-            var currentAssembly = typeof(ServiceExtensions);
-        }
-
-        public static void ConfigureMediatR(this IServiceCollection services) =>
-            services.AddMediatR(Assembly.GetExecutingAssembly());
     }
 }
