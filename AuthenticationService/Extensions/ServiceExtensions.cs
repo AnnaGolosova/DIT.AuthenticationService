@@ -11,7 +11,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using AuthenticationService.Services;
 using System.Text;
+using AuthenticationService.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuthenticationService.Extensions
 {
@@ -35,13 +38,23 @@ namespace AuthenticationService.Extensions
                 options.ForwardClientCertificate = true;
             });
 
-        public static void ConfigureRoleManager(this IServiceCollection services) =>
+        public static void ConfigureManagers(this IServiceCollection services)
+        {
             services.AddScoped<RoleManager<IdentityRole>>();
+            services.AddScoped<IAuthenticationManager, AuthenticationManager>();
+        }
+
+        public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddDbContext<AuthenticationDbContext>(options =>
+              options.UseSqlServer(configuration.GetConnectionString("AuthenticationDbConnection"), builder =>
+              builder.MigrationsAssembly("Infrastructure")));
+        }
 
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("JwtSettings");
-            var secretKey = configuration.GetSection("SECRET").Value;
+            var secretKey = configuration.GetSection("JwtWord").Value;
 
             services.AddAuthentication(options =>
             {
@@ -59,7 +72,7 @@ namespace AuthenticationService.Extensions
 
                     ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
                     ValidAudience = jwtSettings.GetSection("validAudience").Value,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("CodeMazeSecretKey"))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
                 };
             });
         }
@@ -79,13 +92,13 @@ namespace AuthenticationService.Extensions
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole),
                 builder.Services);
 
-            //builder.AddEntityFrameworkStores<RepositoryContext>()
-              //  .AddDefaultTokenProviders();
+            builder.AddEntityFrameworkStores<AuthenticationDbContext>()
+                .AddDefaultTokenProviders();
         }
 
         public static void ConfigureServices(this IServiceCollection services)
         {
-            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IAuthenticationManager, AuthenticationManager>();
         }
 
         public static void ConfigureSwagger(this IServiceCollection services)
@@ -94,13 +107,13 @@ namespace AuthenticationService.Extensions
             {
                 s.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Authentication API v1",
+                    Title = "Authentication API",
                     Description = "Authentication WEB API"
                 });
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                s.IncludeXmlComments(xmlPath);
+                //s.IncludeXmlComments(xmlPath);
 
                 s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {

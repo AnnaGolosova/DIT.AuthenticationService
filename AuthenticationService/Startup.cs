@@ -22,9 +22,9 @@ namespace AuthenticationService
             services.AddAuthentication();
             services.AddAuthorization();
             services.ConfigureCors();
-            services.ConfigureServices();
+            services.ConfigureManagers();
             services.ConfigureIdentity();
-            services.ConfigureRoleManager();
+            services.ConfigureSqlContext(Configuration);
             services.ConfigureSwagger();
             services.AddControllers(config =>
             {
@@ -52,8 +52,7 @@ namespace AuthenticationService
             app.UseSwagger();
             app.UseSwaggerUI(s =>
             {
-                s.SwaggerEndpoint("/swagger/v1/swagger.json", "Products API v1");
-                s.SwaggerEndpoint("/swagger/v2/swagger.json", "Products API v2");
+                s.SwaggerEndpoint("/swagger/v1/swagger.json", "Authentication Service API");
             });
 
             app.UseEndpoints(endpoints =>

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace AuthenticationService.Interfaces
 {
-    public interface IAuthenticationService
+    public interface IAuthenticationManager
     {
         public Task<bool> ValidateUser(UserAuthenticationDto userForAuth);
 

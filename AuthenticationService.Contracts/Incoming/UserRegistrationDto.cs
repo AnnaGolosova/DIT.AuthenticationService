@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace AuthenticationService.Contracts.Incoming
 {
@@ -9,6 +7,8 @@ namespace AuthenticationService.Contracts.Incoming
         public string Username { get; set; }
 
         public string Email { get; set; }
+
+        public string Password { get; set; }
 
         public ICollection<string> Roles { get; set; }
     }

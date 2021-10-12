@@ -13,13 +13,13 @@ using System.Threading.Tasks;
 
 namespace AuthenticationService.Services
 {
-    public class AuthenticationService : IAuthenticationService
+    public class AuthenticationManager : IAuthenticationManager
     {
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
         private User _user;
 
-        public AuthenticationService(UserManager<User> userManager,
+        public AuthenticationManager(UserManager<User> userManager,
             IConfiguration configuration)
         {
             _userManager = userManager;
