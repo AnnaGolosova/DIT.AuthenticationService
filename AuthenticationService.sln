@@ -5,15 +5,17 @@ VisualStudioVersion = 16.0.31624.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationService", "AuthenticationService\AuthenticationService.csproj", "{6C95C91C-3E7F-4A1C-90FE-F9B0D120F053}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationService.Core", "AuthenticationService.Domain\AuthenticationService.Core.csproj", "{D041845B-004E-4FDF-A824-FD6D235DD0A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationService.Core", "AuthenticationService.Domain\AuthenticationService.Core.csproj", "{D041845B-004E-4FDF-A824-FD6D235DD0A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationService.Services", "AuthenticationService.Services\AuthenticationService.Services.csproj", "{C96D7BCE-037C-455D-A9E8-37E84CC1D2C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationService.Services", "AuthenticationService.Services\AuthenticationService.Services.csproj", "{C96D7BCE-037C-455D-A9E8-37E84CC1D2C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationService.Contracts", "AuthenticationService.Contracts\AuthenticationService.Contracts.csproj", "{956578DC-1FAE-4C42-A93C-95C6A9E56001}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationService.Contracts", "AuthenticationService.Contracts\AuthenticationService.Contracts.csproj", "{956578DC-1FAE-4C42-A93C-95C6A9E56001}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationService.Infrastructure", "AuthenticationService.Infrastructure\AuthenticationService.Infrastructure.csproj", "{66824876-496A-4DE2-AC57-21B8D0B6404F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationService.Infrastructure", "AuthenticationService.Infrastructure\AuthenticationService.Infrastructure.csproj", "{66824876-496A-4DE2-AC57-21B8D0B6404F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationService.Application", "AuthenticationService.Application\AuthenticationService.Application.csproj", "{1495EEE4-CA81-482F-AEB9-93C7C6AF62FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationService.Application", "AuthenticationService.Application\AuthenticationService.Application.csproj", "{1495EEE4-CA81-482F-AEB9-93C7C6AF62FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationService.UnitTests", "AuthenticationService.UnitTests\AuthenticationService.UnitTests.csproj", "{9ECBAC4E-2037-4969-879F-546357F2D1CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{1495EEE4-CA81-482F-AEB9-93C7C6AF62FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1495EEE4-CA81-482F-AEB9-93C7C6AF62FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1495EEE4-CA81-482F-AEB9-93C7C6AF62FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9ECBAC4E-2037-4969-879F-546357F2D1CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9ECBAC4E-2037-4969-879F-546357F2D1CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9ECBAC4E-2037-4969-879F-546357F2D1CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9ECBAC4E-2037-4969-879F-546357F2D1CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

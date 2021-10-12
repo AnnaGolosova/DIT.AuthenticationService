@@ -40,7 +40,7 @@ namespace AuthenticationService
             {
                 app.UseDeveloperExceptionPage();
             }
-            //app.ConfigureExceptionHandler();
+            app.ConfigureExceptionHandler();
             app.UseHttpsRedirection();
             app.UseCors("CorsPolicy");
 

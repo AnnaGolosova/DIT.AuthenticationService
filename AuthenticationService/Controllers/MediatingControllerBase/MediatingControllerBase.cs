@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Net;
@@ -54,12 +55,19 @@ namespace AuthenticationService.Controllers
 
             if (!ModelState.IsValid)
                 return BadRequest("Invalid data provided");
+            try
+            {
+                TResult response = await _mediator.Send(command, cancellationToken);
+                if (response == null)
+                    throw new Exception("Error processing request");
 
-            TResult response = await _mediator.Send(command, cancellationToken);
-            if (response == null)
-                throw new Exception("Error processing request");
-
-            return Ok(response);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

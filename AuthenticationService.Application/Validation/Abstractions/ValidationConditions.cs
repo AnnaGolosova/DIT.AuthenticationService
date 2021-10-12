@@ -32,7 +32,8 @@ namespace AuthenticationService.Application.Validation.Abstractions
             IsNotNullOrWhitespace(password) &&
             password.Any(char.IsDigit) &&
             password.Any(char.IsUpper) &&
-           !password.Any(char.IsWhiteSpace);
+           !password.Any(char.IsWhiteSpace) &&
+            password.Length >= 8;
 
         public bool IsValidEmail(string email)
         {
