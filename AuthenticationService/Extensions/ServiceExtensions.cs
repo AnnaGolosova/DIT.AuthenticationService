@@ -119,8 +119,8 @@ namespace AuthenticationService.Extensions
                 });
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                //s.IncludeXmlComments(xmlPath);
+                var xmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, xmlFile);
+                //s.IncludeXmlComments(xmlFile);
 
                 s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -130,6 +130,7 @@ namespace AuthenticationService.Extensions
                     Type = SecuritySchemeType.ApiKey,
                     Scheme = "Bearer"
                 });
+
                 s.AddSecurityRequirement(new OpenApiSecurityRequirement()
                 {
                     {
@@ -148,9 +149,10 @@ namespace AuthenticationService.Extensions
             });
         }
 
-        public static void AddValidators(this IServiceCollection services)
+        public static void ConfigureValidators(this IServiceCollection services)
         {
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
             services.Scan(x =>
             {
                 var entryAssembly = Assembly.GetEntryAssembly();
@@ -162,6 +164,8 @@ namespace AuthenticationService.Extensions
                     .AsImplementedInterfaces()
                     .WithScopedLifetime();
             });
+
+            var currentAssembly = typeof(ServiceExtensions);
         }
 
         public static void ConfigureMediatR(this IServiceCollection services) =>

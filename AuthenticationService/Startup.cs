@@ -18,7 +18,6 @@ namespace AuthenticationService
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddValidators();
             services.AddAuthentication();
             services.AddAuthorization();
             services.ConfigureAutoMapper();
@@ -27,6 +26,7 @@ namespace AuthenticationService
             services.ConfigureManagers();
             services.ConfigureIdentity();
             services.ConfigureSqlContext(Configuration);
+            services.ConfigureValidators();
             services.ConfigureSwagger();
             services.AddControllers(config =>
             {
@@ -43,7 +43,6 @@ namespace AuthenticationService
             }
             app.ConfigureExceptionHandler();
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
             app.UseCors("CorsPolicy");
 
             app.UseRouting();

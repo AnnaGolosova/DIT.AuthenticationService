@@ -47,7 +47,7 @@ namespace AuthenticationService.Controllers
         }
 
         protected async Task<IActionResult> ExecuteCommandAsync<TResult>(IRequest<TResult> command,
-            string notFoundMeesage = null, CancellationToken cancellationToken = default)
+            string notFoundMessage = null, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));

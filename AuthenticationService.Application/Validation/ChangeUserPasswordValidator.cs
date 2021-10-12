@@ -17,19 +17,19 @@ namespace AuthenticationService.Application.Validation
         {
             RuleFor(cmd => cmd.Entity)
                 .NotNull()
-                .WithMessage(cmd => "Entity");
+                .WithMessage(cmd => "Entity is invalid");
 
             RuleFor(cmd => cmd.Entity.Username)
                 .Must(ValidationConditions.IsNotNullOrWhitespace)
-                .WithMessage(cmd => "Entity");
+                .WithMessage(cmd => "Username is required field");
 
             RuleFor(cmd => cmd.Entity.OldPassword)
                 .Must(ValidationConditions.IsValidPassword)
-                .WithMessage(cmd => "Entity");
+                .WithMessage(cmd => "Password must contain upper letter and digit");
 
             RuleFor(cmd => cmd.Entity.NewPassword)
                 .Must(ValidationConditions.IsValidPassword)
-                .WithMessage(cmd => "Entity");
+                .WithMessage(cmd => "Password must contain upper letter and digit");
         }
     }
 }
