@@ -1,16 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MediatR;
 
 namespace AuthenticationService.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : MediatingControllerBase
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        public AccountController(IMediator _mediator) : base(_mediator)
+        { }
     }
 }
