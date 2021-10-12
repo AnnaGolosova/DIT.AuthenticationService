@@ -1,12 +1,10 @@
-﻿using AuthenticationService.Application.Commands.Abstractions;
+﻿using AuthenticationService.Application.Commands;
 using AuthenticationService.Application.Validation.Abstractions.Interfaces;
-using AuthenticationService.Contracts.Incoming;
 using FluentValidation;
 
 namespace AuthenticationService.Application.Validation
 {
-    public class RegistrationValidator<TCommand, TResponse> : AbstractValidator<TCommand>
-        where TCommand : BaseCommand<RegistrationUserDto, TResponse>
+    public class RegistrationValidator : AbstractValidator<RegisterUserCommand>
     {
         private readonly IValidationConditions _validateConditions;
 

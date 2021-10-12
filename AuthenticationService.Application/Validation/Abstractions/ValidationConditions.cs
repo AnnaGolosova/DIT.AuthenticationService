@@ -1,5 +1,7 @@
 ﻿using AuthenticationService.Application.Validation.Abstractions.Interfaces;
+using AuthenticationService.Contracts.Incoming;
 using AuthenticationService.Domain.Models;
+using AuthenticationService.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +11,18 @@ namespace AuthenticationService.Application.Validation.Abstractions
 {
     public class ValidationConditions : IValidationConditions
     {
-        private readonly UserManager<User> _userManager;
+        private readonly IAuthenticationManager _authenticationManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<User> _userManager;
 
-        public ValidationConditions(UserManager<User> userManager,
-            RoleManager<IdentityRole> roleManager)
+        public ValidationConditions(
+            IAuthenticationManager authenticationManager,
+            RoleManager<IdentityRole> roleManager,
+            UserManager<User> userManager)
         {
-            _userManager = userManager;
+            _authenticationManager = authenticationManager;
             _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         public bool IsNotNullOrWhitespace(string value) =>
@@ -58,6 +64,24 @@ namespace AuthenticationService.Application.Validation.Abstractions
         {
             var user = _userManager.FindByNameAsync(username).Result;
             return user != null;
+        }
+
+        public bool IsValidUser(AuthenticationUserDto user)
+        {
+            var validationResult = _authenticationManager.ValidateUser(user).Result;
+            return validationResult;
+        }
+
+        public bool IsValidUser(ChangeUserPasswordDto changePassword)
+        {
+            var user = new AuthenticationUserDto()
+            {
+                Username = changePassword.Username,
+                Password = changePassword.OldPassword
+            };
+
+            var validationResult = _authenticationManager.ValidateUser(user).Result;
+            return validationResult;
         }
     }
 }

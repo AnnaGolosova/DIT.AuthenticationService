@@ -1,12 +1,10 @@
-﻿using AuthenticationService.Application.Commands.Abstractions;
+﻿using AuthenticationService.Application.Commands;
 using AuthenticationService.Application.Validation.Abstractions.Interfaces;
-using AuthenticationService.Contracts.Incoming;
 using FluentValidation;
 
 namespace AuthenticationService.Application.Validation
 {
-    public class DeleteUserValidator<TCommand, TResponse> : AbstractValidator<TCommand>
-        where TCommand : BaseCommand<AuthenticationUserDto, TResponse>
+    public class DeleteUserValidator : AbstractValidator<DeleteUserCommand>
     {
         private readonly IValidationConditions _validateConditions;
 
@@ -29,6 +27,10 @@ namespace AuthenticationService.Application.Validation
             RuleFor(cmd => cmd.Entity.Password)
                 .Must(_validateConditions.IsValidPassword)
                 .WithMessage(cmd => "Password must contain upper letter and digit");
+
+            RuleFor(cmd => cmd.Entity)
+                .Must(_validateConditions.IsValidUser)
+                .WithMessage(cmd => "Wrong username or password");
         }
     }
 }

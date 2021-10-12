@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using AuthenticationService.Contracts.Incoming;
+using System.Collections.Generic;
 
 namespace AuthenticationService.Application.Validation.Abstractions.Interfaces
 {
@@ -13,5 +14,9 @@ namespace AuthenticationService.Application.Validation.Abstractions.Interfaces
         bool RolesExists(ICollection<string> roles);
 
         bool UserExists(string username);
+
+        bool IsValidUser(AuthenticationUserDto user);
+
+        bool IsValidUser(ChangeUserPasswordDto user);
     }
 }
