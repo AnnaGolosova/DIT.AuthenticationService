@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AuthenticationService.Contracts.Incoming
+﻿namespace AuthenticationService.Contracts.Incoming
 {
     public class ChangeUserPasswordDto
     {

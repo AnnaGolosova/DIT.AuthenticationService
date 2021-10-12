@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 
@@ -12,7 +10,7 @@ namespace AuthenticationService.Application.Validation.Abstractions
             !string.IsNullOrWhiteSpace(value);
 
         public static bool IsValidPassword(string password) =>
-            password.Length > 0 &&
+            IsNotNullOrWhitespace(password) &&
             password.Any(char.IsDigit) &&
             password.Any(char.IsUpper) &&
            !password.Any(char.IsWhiteSpace);
@@ -22,7 +20,7 @@ namespace AuthenticationService.Application.Validation.Abstractions
             try
             {
                 var address = new MailAddress(email).Address;
-                return address == email && address.Length > 0;
+                return address == email && IsNotNullOrWhitespace(address);
             }
             catch
             {

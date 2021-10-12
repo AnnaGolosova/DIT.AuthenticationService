@@ -12,10 +12,25 @@ namespace AuthenticationService.Controllers
         public AccountController(IMediator _mediator) : base(_mediator)
         { }
 
-        [HttpPost]
-        public async Task<IActionResult> AuthenticateUser([FromBody] AuthenticationUserDto user, 
-            CancellationToken cancellationToken = default) =>
-            await ExecuteCommandAsync(new AuthenticateUserCommand(user), cancellationToken: cancellationToken);
+        [HttpPost("register")]
+        public async Task<IActionResult> RegisterUser([FromBody] RegistrationUserDto registerUser,
+            CancellationToken cancellationToken) =>
+            await ExecuteCommandAsync(new RegisterUserCommand(registerUser), cancellationToken: cancellationToken);
+
+        [HttpPost("authenticate")]
+        public async Task<IActionResult> AuthenticateUser([FromBody] AuthenticationUserDto authenticateUser,
+            CancellationToken cancellationToken) =>
+            await ExecuteCommandAsync(new AuthenticateUserCommand(authenticateUser), cancellationToken: cancellationToken);
+
+        [HttpPut("change-password")]
+        public async Task<IActionResult> ChangeUserPassword([FromBody] ChangeUserPasswordDto changePassword,
+            CancellationToken cancellationToken) =>
+            await ExecuteCommandAsync(new ChangeUserPasswordCommand(changePassword), cancellationToken: cancellationToken);
+        
+        [HttpDelete()]
+        public async Task<IActionResult> DeleteUser([FromBody] AuthenticationUserDto authenticateUser,
+            CancellationToken cancellationToken) =>
+            await ExecuteCommandAsync(new DeleteUserCommand(authenticateUser), cancellationToken: cancellationToken);
 
     }
 }

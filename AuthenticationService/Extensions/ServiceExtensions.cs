@@ -1,7 +1,10 @@
-﻿using AuthenticationService.Domain.Models;
+﻿using AuthenticationService.Application.Validation.Abstractions;
+using AuthenticationService.Domain.Models;
 using AuthenticationService.Infrastructure;
 using AuthenticationService.Interfaces;
 using AuthenticationService.Services;
+using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -13,6 +16,7 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -48,7 +52,7 @@ namespace AuthenticationService.Extensions
         {
             services.AddDbContext<AuthenticationDbContext>(options =>
               options.UseSqlServer(configuration.GetConnectionString("AuthenticationDbConnection"), builder =>
-              builder.MigrationsAssembly("Infrastructure")));
+              builder.MigrationsAssembly("AuthenticationService.Infrastructure")));
         }
 
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
@@ -101,6 +105,9 @@ namespace AuthenticationService.Extensions
             services.AddScoped<IAuthenticationManager, AuthenticationManager>();
         }
 
+        public static void ConfigureAutoMapper(this IServiceCollection services) =>
+            services.AddAutoMapper(typeof(Startup));
+
         public static void ConfigureSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen(s =>
@@ -140,5 +147,24 @@ namespace AuthenticationService.Extensions
                 });
             });
         }
+
+        public static void AddValidators(this IServiceCollection services)
+        {
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            services.Scan(x =>
+            {
+                var entryAssembly = Assembly.GetEntryAssembly();
+                IEnumerable<Assembly> referencedAssemblies = entryAssembly.GetReferencedAssemblies().Select(Assembly.Load);
+                IEnumerable<Assembly> assemblies = new List<Assembly> { entryAssembly }.Concat(referencedAssemblies);
+
+                x.FromAssemblies(assemblies)
+                    .AddClasses(classes => classes.AssignableTo(typeof(IValidator<>)))
+                    .AsImplementedInterfaces()
+                    .WithScopedLifetime();
+            });
+        }
+
+        public static void ConfigureMediatR(this IServiceCollection services) =>
+            services.AddMediatR(Assembly.GetExecutingAssembly());
     }
 }

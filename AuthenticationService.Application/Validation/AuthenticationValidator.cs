@@ -2,8 +2,6 @@
 using AuthenticationService.Application.Validation.Abstractions;
 using AuthenticationService.Contracts.Incoming;
 using FluentValidation;
-using System;
-using System.Linq;
 
 namespace AuthenticationService.Application.Validation
 {
@@ -26,13 +24,8 @@ namespace AuthenticationService.Application.Validation
                 .WithMessage(cmd => "Entity");
 
             RuleFor(cmd => cmd.Entity.Password)
-                .Must(ValidationConditions.IsNotNullOrWhitespace)
-                .WithMessage(cmd => "Entity");
-
-            RuleFor(cmd => cmd.Entity.Password)
                 .Must(ValidationConditions.IsValidPassword)
                 .WithMessage(cmd => "Entity");
         }
-
     }
 }

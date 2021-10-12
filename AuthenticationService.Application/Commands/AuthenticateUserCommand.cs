@@ -21,7 +21,7 @@ namespace AuthenticationService.Application.Commands
         private readonly UserManager<User> _userManager;
 
         public AuthenticateUserCommandHandler(
-            IAuthenticationManager authenticationManager, 
+            IAuthenticationManager authenticationManager,
             UserManager<User> userManager)
         {
             _authenticationManager = authenticationManager;

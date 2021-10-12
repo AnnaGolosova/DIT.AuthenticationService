@@ -10,17 +10,17 @@ using System.Threading.Tasks;
 
 namespace AuthenticationService.Application.Commands
 {
-    public class ChangeUserPasswordCommand : BaseCommand<ChangeUserPasswordDto, Response>
+    public class DeleteUserCommand : BaseCommand<AuthenticationUserDto, Response>
     {
-        public ChangeUserPasswordCommand(ChangeUserPasswordDto changePassword) : base(changePassword) { }
+        public DeleteUserCommand(AuthenticationUserDto userAuthentication) : base(userAuthentication) { }
     }
 
-    class ChangeUserPasswordCommandHandler : IRequestHandler<ChangeUserPasswordCommand, Response>
+    class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Response>
     {
         private readonly IAuthenticationManager _authenticationManager;
         private readonly UserManager<User> _userManager;
 
-        public ChangeUserPasswordCommandHandler(
+        public DeleteUserCommandHandler(
             IAuthenticationManager authenticationManager,
             UserManager<User> userManager)
         {
@@ -28,13 +28,10 @@ namespace AuthenticationService.Application.Commands
             _userManager = userManager;
         }
 
-        public async Task<Response> Handle(ChangeUserPasswordCommand request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByNameAsync(request.Entity.Username);
-
-            var result = await _userManager.ChangePasswordAsync(
-                user, request.Entity.OldPassword, request.Entity.NewPassword);
-
+            var userForDelete = await _userManager.FindByNameAsync(request.Entity.Username);
+            var result = await _userManager.DeleteAsync(userForDelete);
             if (result.Succeeded == false)
             {
                 return Response.Error;

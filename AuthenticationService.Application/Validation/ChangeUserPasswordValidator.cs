@@ -5,10 +5,10 @@ using FluentValidation;
 
 namespace AuthenticationService.Application.Validation
 {
-    public class RegistrationValidator<TCommand, TResponse> : AbstractValidator<TCommand>
-        where TCommand : BaseCommand<RegistrationUserDto, TResponse>
+    class ChangeUserPasswordValidator<TCommand, TResponse> : AbstractValidator<TCommand>
+        where TCommand : BaseCommand<ChangeUserPasswordDto, TResponse>
     {
-        public RegistrationValidator()
+        public ChangeUserPasswordValidator()
         {
             CreateRules();
         }
@@ -23,16 +23,12 @@ namespace AuthenticationService.Application.Validation
                 .Must(ValidationConditions.IsNotNullOrWhitespace)
                 .WithMessage(cmd => "Entity");
 
-            RuleFor(cmd => cmd.Entity.Password)
+            RuleFor(cmd => cmd.Entity.OldPassword)
                 .Must(ValidationConditions.IsValidPassword)
                 .WithMessage(cmd => "Entity");
 
-            RuleFor(cmd => cmd.Entity.Email)
-                .Must(ValidationConditions.IsValidEmail)
-                .WithMessage(cmd => "Entity");
-
-            RuleFor(cmd => cmd.Entity.Roles)
-                .Must(ValidationConditions.IsValidRoles)
+            RuleFor(cmd => cmd.Entity.NewPassword)
+                .Must(ValidationConditions.IsValidPassword)
                 .WithMessage(cmd => "Entity");
         }
     }

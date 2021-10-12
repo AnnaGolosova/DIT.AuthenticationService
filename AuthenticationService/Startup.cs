@@ -18,8 +18,11 @@ namespace AuthenticationService
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddValidators();
             services.AddAuthentication();
             services.AddAuthorization();
+            services.ConfigureAutoMapper();
+            services.ConfigureMediatR();
             services.ConfigureCors();
             services.ConfigureManagers();
             services.ConfigureIdentity();
