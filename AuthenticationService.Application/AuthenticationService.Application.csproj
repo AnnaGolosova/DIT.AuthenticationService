@@ -5,15 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Validation\" />
     <Folder Include="Queries\" />
-    <Folder Include="Commands\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="10.3.3" />
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AuthenticationService.Contracts\AuthenticationService.Contracts.csproj" />
+    <ProjectReference Include="..\AuthenticationService.Services\AuthenticationService.Services.csproj" />
   </ItemGroup>
 
 </Project>

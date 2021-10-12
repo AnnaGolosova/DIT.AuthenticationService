@@ -26,7 +26,7 @@ namespace AuthenticationService.Services
             _configuration = configuration;
         }
 
-        public async Task<bool> ValidateUser(UserAuthenticationDto userForAuth)
+        public async Task<bool> ValidateUser(AuthenticationUserDto userForAuth)
         {
             _user = await _userManager.FindByNameAsync(userForAuth.Username);
 

@@ -1,6 +1,6 @@
 ﻿namespace AuthenticationService.Contracts.Incoming
 {
-    public class UserAuthenticationDto
+    public class AuthenticationUserDto
     {
         public string Username { get; set; }
 

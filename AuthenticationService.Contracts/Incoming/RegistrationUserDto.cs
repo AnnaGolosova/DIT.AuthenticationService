@@ -2,7 +2,7 @@
 
 namespace AuthenticationService.Contracts.Incoming
 {
-    public class UserRegistrationDto
+    public class RegistrationUserDto
     {
         public string Username { get; set; }
 

@@ -1,8 +1,11 @@
 ﻿using AuthenticationService.Domain.Models;
+using AuthenticationService.Infrastructure;
 using AuthenticationService.Interfaces;
+using AuthenticationService.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -11,10 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using AuthenticationService.Services;
 using System.Text;
-using AuthenticationService.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 
 namespace AuthenticationService.Extensions
 {

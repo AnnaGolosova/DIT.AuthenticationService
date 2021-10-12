@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace AuthenticationService.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class MediatingControllerBase : ControllerBase
     {
         private readonly IMediator _mediator;
