@@ -67,13 +67,13 @@ namespace AuthenticationService.Application.Validation.Abstractions
             return user != null;
         }
 
-        public bool IsValidUser(AuthenticationUserDto user)
+        public bool IsValidAuthenticate(AuthenticationUserDto user)
         {
             var validationResult = _authenticationManager.ValidateUser(user).Result;
             return validationResult;
         }
 
-        public bool IsValidUser(ChangeUserPasswordDto changePassword)
+        public bool IsValidAuthenticate(ChangeUserPasswordDto changePassword)
         {
             var user = new AuthenticationUserDto()
             {

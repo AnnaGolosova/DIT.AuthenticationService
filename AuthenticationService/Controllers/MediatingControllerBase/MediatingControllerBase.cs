@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Net;
@@ -10,7 +9,7 @@ namespace AuthenticationService.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class MediatingControllerBase : ControllerBase
+    public abstract class MediatingControllerBase : ControllerBase
     {
         private readonly IMediator _mediator;
 
@@ -65,7 +64,9 @@ namespace AuthenticationService.Controllers
             }
             catch (Exception ex)
             {
-                
+                if (ex.Message.Contains("Wrong username or password"))
+                    return NotFound("Wrong username or password");
+
                 return BadRequest(ex.Message);
             }
         }

@@ -15,8 +15,8 @@ namespace AuthenticationService.Application.Validation.Abstractions.Interfaces
 
         bool UserExists(string username);
 
-        bool IsValidUser(AuthenticationUserDto user);
+        bool IsValidAuthenticate(AuthenticationUserDto user);
 
-        bool IsValidUser(ChangeUserPasswordDto user);
+        bool IsValidAuthenticate(ChangeUserPasswordDto user);
     }
 }

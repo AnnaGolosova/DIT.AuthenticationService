@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="AuthenticationServiceTests\" />
+    <Folder Include="AuthenticationServiceTests\Controllers\" />
   </ItemGroup>
 
   <ItemGroup>

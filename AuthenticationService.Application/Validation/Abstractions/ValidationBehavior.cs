@@ -27,7 +27,10 @@ namespace AuthenticationService.Application.Validation.Abstractions
                 .ToList();
 
             if (failures.Count != 0)
-                throw new ValidationException(failures);
+            {
+                var resultFailures = string.Join("\n\r", failures.Select(f => f.ErrorMessage));
+                throw new ValidationException(resultFailures);
+            }
 
             return next();
         }

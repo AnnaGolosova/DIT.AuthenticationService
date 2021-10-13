@@ -25,7 +25,7 @@ namespace AuthenticationService.Application.Validation
                 .WithMessage(cmd => "Username is required field");
 
             RuleFor(cmd => cmd.Entity)
-                .Must(_validateConditions.IsValidUser)
+                .Must(_validateConditions.IsValidAuthenticate)
                 .WithMessage(cmd => "Wrong username or password");
 
             RuleFor(cmd => cmd.Entity.OldPassword)
