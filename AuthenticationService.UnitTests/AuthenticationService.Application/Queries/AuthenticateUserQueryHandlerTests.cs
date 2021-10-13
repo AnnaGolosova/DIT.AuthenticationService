@@ -1,4 +1,5 @@
 ﻿using AuthenticationService.Application.Commands;
+using AuthenticationService.Application.Queries;
 using AuthenticationService.Contracts.Incoming;
 using AuthenticationService.Domain.Models;
 using AuthenticationService.Interfaces;
@@ -9,29 +10,34 @@ using System.Linq;
 using System.Threading;
 using Xunit;
 
-namespace AuthenticationService.UnitTests.AuthenticationService.Application.Commands
+namespace AuthenticationService.UnitTests.AuthenticationService.Application.Queries
 {
-    public class AuthenticateUserCommandHandlerTests
+    public class AuthenticateUserQueryHandlerTests
     {
-        private AuthenticateUserCommandHandler _authenticateCommandHandler;
-        private AuthenticateUserCommand _authenticateCommand;
+        private AuthenticateUserQueryHandler _authenticateCommandHandler;
+        private AuthenticateUserQuery _authenticateCommand;
         private Mock<IAuthenticationManager> _authenticationManager;
         private Mock<UserManager<User>> _userManager;
         private AuthenticationUserDto _authenticationUser;
         private User _user;
 
-        public AuthenticateUserCommandHandlerTests()
+        public AuthenticateUserQueryHandlerTests()
         {
             _user = new User() { UserName = "TestUsername", Id = "TestId" };
-            _authenticationUser = new AuthenticationUserDto { UserName = "TestUsername", Password = "Test" };
+            _authenticationUser = new AuthenticationUserDto
+            {
+                UserName = "TestUsername",
+                Password = "Test"
+            };
 
             var storeUserManager = new Mock<IUserStore<User>>();
-            _userManager = new Mock<UserManager<User>>(storeUserManager.Object, null, null, null, null, null, null, null, null);
+            _userManager = new Mock<UserManager<User>>(
+                storeUserManager.Object, null, null, null, null, null, null, null, null);
             _authenticationManager = new Mock<IAuthenticationManager>();
 
-            _authenticateCommand = new AuthenticateUserCommand(_authenticationUser);
+            _authenticateCommand = new AuthenticateUserQuery(_authenticationUser);
 
-            _authenticateCommandHandler = new AuthenticateUserCommandHandler(
+            _authenticateCommandHandler = new AuthenticateUserQueryHandler(
                 _authenticationManager.Object,
                 _userManager.Object);
 

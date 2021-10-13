@@ -1,4 +1,5 @@
 ﻿using AuthenticationService.Application.Commands;
+using AuthenticationService.Application.Queries;
 using AuthenticationService.Contracts.Incoming;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +26,7 @@ namespace AuthenticationService.Controllers
         /// <returns> Bearer token with user roles </returns>
         public async Task<IActionResult> AuthenticateUser([FromBody] AuthenticationUserDto authenticateUser,
             CancellationToken cancellationToken) =>
-            await ExecuteCommandAsync(new AuthenticateUserCommand(authenticateUser), cancellationToken: cancellationToken);
+            await ExecuteQueryAsync(new AuthenticateUserQuery(authenticateUser), cancellationToken: cancellationToken);
 
         [HttpPut("change-password")]
         /// <summary> Change account password</summary>

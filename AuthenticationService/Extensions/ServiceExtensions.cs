@@ -4,6 +4,7 @@ using AuthenticationService.Interfaces;
 using AuthenticationService.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -44,11 +45,21 @@ namespace AuthenticationService.Extensions
             services.AddScoped<IAuthenticationManager, AuthenticationManager>();
         }
 
-        public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureSqlContext(this IServiceCollection services, 
+            IConfiguration configuration, IWebHostEnvironment currentEnviroment)
         {
-            services.AddDbContext<AuthenticationDbContext>(options =>
-              options.UseSqlServer(configuration.GetConnectionString("AuthenticationDbConnection"), builder =>
-              builder.MigrationsAssembly("AuthenticationService.Infrastructure")));
+            if (currentEnviroment.EnvironmentName == "Testing")
+            {
+                services.AddDbContext<AuthenticationDbContext>(options =>
+                    options.UseInMemoryDatabase("TestAuthenticationDB"));
+            }
+            else
+            {
+                services.AddDbContext<AuthenticationDbContext>(options =>
+                  options.UseSqlServer(configuration.GetConnectionString("AuthenticationDbConnection"), builder =>
+                  builder.MigrationsAssembly("AuthenticationService.Infrastructure")));
+            }
+
         }
 
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)

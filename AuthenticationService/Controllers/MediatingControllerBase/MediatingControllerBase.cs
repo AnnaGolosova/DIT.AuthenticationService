@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Net;
@@ -27,45 +28,71 @@ namespace AuthenticationService.Controllers
             string notFoundMessage = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (query == null)
-                throw new ArgumentNullException(nameof(query));
-
-            if (!ModelState.IsValid)
-                return BadRequest("Invalid data provided");
-
-            TResult response = await _mediator.Send(query, cancellationToken);
-
-            if (response == null)
             {
-                var actualNotFoundMessage = string.IsNullOrWhiteSpace(notFoundMessage)
-                    ? string.Format("Not Found")
-                    : notFoundMessage;
-
-                return NotFound(actualNotFoundMessage);
+                throw new ArgumentNullException(nameof(query));
             }
 
-            return Ok(response);
-        }
-
-        protected async Task<IActionResult> ExecuteCommandAsync<TResult>(IRequest<TResult> command,
-            string notFoundMessage = null, CancellationToken cancellationToken = default)
-        {
-            if (command == null)
-                throw new ArgumentNullException(nameof(command));
-
             if (!ModelState.IsValid)
+            {
                 return BadRequest("Invalid data provided");
+            }
+
             try
             {
-                TResult response = await _mediator.Send(command, cancellationToken);
+                TResult response = await _mediator.Send(query, cancellationToken);
+
                 if (response == null)
+                {
                     throw new Exception("Error processing request");
+                }
 
                 return Ok(response);
             }
             catch (Exception ex)
             {
                 if (ex.Message.Contains("Wrong username or password"))
+                {
                     return NotFound("Wrong username or password");
+                }
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+        protected async Task<IActionResult> ExecuteCommandAsync<TResult>(IRequest<TResult> command,
+            string notFoundMessage = null, CancellationToken cancellationToken = default)
+        {
+            if (command == null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid data provided");
+            }
+
+            try
+            {
+                TResult response = await _mediator.Send(command, cancellationToken);
+                if ((response as IdentityResult).Succeeded == false)
+                {
+                    return BadRequest(response);
+                }
+
+                if (response == null)
+                {
+                    throw new Exception("Error processing request");
+                }
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Wrong username or password"))
+                {
+                    return NotFound("Wrong username or password");
+                }
 
                 return BadRequest(ex.Message);
             }

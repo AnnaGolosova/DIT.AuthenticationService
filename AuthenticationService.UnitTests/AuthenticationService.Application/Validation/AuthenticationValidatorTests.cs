@@ -1,4 +1,5 @@
 ﻿using AuthenticationService.Application.Commands;
+using AuthenticationService.Application.Queries;
 using AuthenticationService.Application.Validation;
 using AuthenticationService.Application.Validation.Abstractions;
 using AuthenticationService.Application.Validation.Abstractions.Interfaces;
@@ -15,23 +16,23 @@ namespace AuthenticationService.UnitTests.AuthenticationService.Application.Vali
 {
     public class AuthenticationValidatorTests
     {
-        private ValidationBehavior<AuthenticateUserCommand, AuthenticationResponseDto> _validationBehavior;
+        private ValidationBehavior<AuthenticateUserQuery, AuthenticationResponseDto> _validationBehavior;
         private Mock<RequestHandlerDelegate<AuthenticationResponseDto>> _next;
-        private Mock<AuthenticateUserCommand> _authenticateUserCommand;
+        private Mock<AuthenticateUserQuery> _AuthenticateUserQuery;
         private Mock<IValidationConditions> _validateConditions;
         private AuthenticationUserDto _authenticationUser;
 
         public AuthenticationValidatorTests()
         {
             _authenticationUser = new AuthenticationUserDto() { UserName = "Test", Password = "Password1" };
-            _authenticateUserCommand = new Mock<AuthenticateUserCommand>(_authenticationUser);
+            _AuthenticateUserQuery = new Mock<AuthenticateUserQuery>(_authenticationUser);
             _validateConditions = new Mock<IValidationConditions>();
             var authenticationValidator = new List<AuthenticationValidator>()
             {
                 new AuthenticationValidator(_validateConditions.Object)
             };
 
-            _validationBehavior = new ValidationBehavior<AuthenticateUserCommand, AuthenticationResponseDto>(
+            _validationBehavior = new ValidationBehavior<AuthenticateUserQuery, AuthenticationResponseDto>(
                 authenticationValidator);
             _next = new Mock<RequestHandlerDelegate<AuthenticationResponseDto>>();
 
@@ -52,7 +53,7 @@ namespace AuthenticationService.UnitTests.AuthenticationService.Application.Vali
 
             try
             {
-                await _validationBehavior.Handle(_authenticateUserCommand.Object,
+                await _validationBehavior.Handle(_AuthenticateUserQuery.Object,
                                                                     CancellationToken.None,
                                                                     _next.Object);
             }
@@ -70,7 +71,7 @@ namespace AuthenticationService.UnitTests.AuthenticationService.Application.Vali
 
             try
             {
-                await _validationBehavior.Handle(_authenticateUserCommand.Object,
+                await _validationBehavior.Handle(_AuthenticateUserQuery.Object,
                                                                     CancellationToken.None,
                                                                     _next.Object);
             }
@@ -88,7 +89,7 @@ namespace AuthenticationService.UnitTests.AuthenticationService.Application.Vali
 
             try
             {
-                await _validationBehavior.Handle(_authenticateUserCommand.Object,
+                await _validationBehavior.Handle(_AuthenticateUserQuery.Object,
                                                                     CancellationToken.None,
                                                                     _next.Object);
             }
@@ -107,7 +108,7 @@ namespace AuthenticationService.UnitTests.AuthenticationService.Application.Vali
 
             try
             {
-                await _validationBehavior.Handle(_authenticateUserCommand.Object,
+                await _validationBehavior.Handle(_AuthenticateUserQuery.Object,
                                                                     CancellationToken.None,
                                                                     _next.Object);
             }

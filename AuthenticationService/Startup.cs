@@ -10,12 +10,15 @@ namespace AuthenticationService
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IConfiguration Configuration { get; }
+        private readonly IWebHostEnvironment CurrentEnviroment;
+
+        public Startup(IConfiguration configuration,
+            IWebHostEnvironment currentEnviroment)
         {
             Configuration = configuration;
+            CurrentEnviroment = currentEnviroment;
         }
-
-        public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -24,7 +27,7 @@ namespace AuthenticationService
             services.ConfigureCors();
             services.ConfigureManagers();
             services.ConfigureIdentity();
-            services.ConfigureSqlContext(Configuration);
+            services.ConfigureSqlContext(Configuration, CurrentEnviroment);
             services.AddAuthenticationServiceApplication();
             services.ConfigureSwagger();
             services.AddControllers(config =>

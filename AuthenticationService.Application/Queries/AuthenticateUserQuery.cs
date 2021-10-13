@@ -8,19 +8,19 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AuthenticationService.Application.Commands
+namespace AuthenticationService.Application.Queries
 {
-    public class AuthenticateUserCommand : BaseCommand<AuthenticationUserDto, AuthenticationResponseDto>
+    public class AuthenticateUserQuery : BaseCommand<AuthenticationUserDto, AuthenticationResponseDto>
     {
-        public AuthenticateUserCommand(AuthenticationUserDto userAuthentication) : base(userAuthentication) { }
+        public AuthenticateUserQuery(AuthenticationUserDto userAuthentication) : base(userAuthentication) { }
     }
 
-    public class AuthenticateUserCommandHandler : IRequestHandler<AuthenticateUserCommand, AuthenticationResponseDto>
+    public class AuthenticateUserQueryHandler : IRequestHandler<AuthenticateUserQuery, AuthenticationResponseDto>
     {
         private readonly IAuthenticationManager _authenticationManager;
         private readonly UserManager<User> _userManager;
 
-        public AuthenticateUserCommandHandler(
+        public AuthenticateUserQueryHandler(
             IAuthenticationManager authenticationManager,
             UserManager<User> userManager)
         {
@@ -28,7 +28,7 @@ namespace AuthenticationService.Application.Commands
             _userManager = userManager;
         }
 
-        public async Task<AuthenticationResponseDto> Handle(AuthenticateUserCommand request, CancellationToken cancellationToken)
+        public async Task<AuthenticationResponseDto> Handle(AuthenticateUserQuery request, CancellationToken cancellationToken)
         {
             var userForRoles = await _userManager.FindByNameAsync(request.Entity.UserName);
             if (userForRoles == null)

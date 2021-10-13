@@ -1,10 +1,11 @@
 ﻿using AuthenticationService.Application.Commands;
+using AuthenticationService.Application.Queries;
 using AuthenticationService.Application.Validation.Abstractions.Interfaces;
 using FluentValidation;
 
 namespace AuthenticationService.Application.Validation
 {
-    public class AuthenticationValidator : AbstractValidator<AuthenticateUserCommand>
+    public class AuthenticationValidator : AbstractValidator<AuthenticateUserQuery>
     {
         private readonly IValidationConditions _validateConditions;
 
