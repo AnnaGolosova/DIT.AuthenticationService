@@ -13,7 +13,7 @@ namespace AuthenticationService.Application.Commands
         public RegisterUserCommand(RegistrationUserDto changePassword) : base(changePassword) { }
     }
 
-    class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, IdentityResult>
+    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, IdentityResult>
     {
         private readonly UserManager<User> _userManager;
 
@@ -28,15 +28,19 @@ namespace AuthenticationService.Application.Commands
 
             var user = MapRegistrationUserDtoToUser(userForRegistration);
 
-            var result = await _userManager.CreateAsync(user, userForRegistration.Password);
-            if (result.Succeeded == false)
+            var resultCreating = await _userManager.CreateAsync(user, userForRegistration.Password);
+            if (resultCreating.Succeeded == false)
             {
-                return result;
+                return resultCreating;
             }
 
-            await _userManager.AddToRolesAsync(user, userForRegistration.Roles);
+            var resultAddRoles = await _userManager.AddToRolesAsync(user, userForRegistration.Roles);
+            if (resultAddRoles.Succeeded == false)
+            {
+                return resultAddRoles;
+            }
 
-            return result;
+            return IdentityResult.Success;
         }
 
         private User MapRegistrationUserDtoToUser(RegistrationUserDto userForRegistration)
@@ -44,7 +48,7 @@ namespace AuthenticationService.Application.Commands
             return new User()
             {
                 Email = userForRegistration.Email,
-                UserName = userForRegistration.Username,
+                UserName = userForRegistration.UserName,
             };
         }
     }

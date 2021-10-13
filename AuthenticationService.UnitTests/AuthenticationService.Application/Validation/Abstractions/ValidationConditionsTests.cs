@@ -12,9 +12,9 @@ namespace AuthenticationService.UnitTests.AuthenticationService.Application.Vali
 {
     public class ValidationConditionsTests
     {
-        Mock<RoleManager<IdentityRole>> _roleManager;
-        Mock<UserManager<User>> _userManager;
-        Mock<IAuthenticationManager> _authenticationManager;
+        private Mock<RoleManager<IdentityRole>> _roleManager;
+        private Mock<UserManager<User>> _userManager;
+        private Mock<IAuthenticationManager> _authenticationManager;
         private readonly ValidationConditions _validationConditions;
 
         public ValidationConditionsTests()
@@ -167,7 +167,7 @@ namespace AuthenticationService.UnitTests.AuthenticationService.Application.Vali
         {
             var inputValue = new AuthenticationUserDto()
             {
-                Username = "InvalidUsername",
+                UserName = "InvalidUsername",
                 Password = "InvalidPassword"
             };
 
@@ -183,7 +183,7 @@ namespace AuthenticationService.UnitTests.AuthenticationService.Application.Vali
         {
             var inputValue = new AuthenticationUserDto()
             {
-                Username = "ValidUsername",
+                UserName = "ValidUsername",
                 Password = "ValidPassword"
             };
 
@@ -199,7 +199,7 @@ namespace AuthenticationService.UnitTests.AuthenticationService.Application.Vali
         {
             var inputValue = new ChangeUserPasswordDto()
             {
-                Username = "InvalidUsername",
+                UserName = "InvalidUsername",
                 OldPassword = "InvalidOldPassword",
                 NewPassword = "InvalidNewPassword"
             };
@@ -216,7 +216,7 @@ namespace AuthenticationService.UnitTests.AuthenticationService.Application.Vali
         {
             var inputValue = new ChangeUserPasswordDto()
             {
-                Username = "ValidUsername",
+                UserName = "ValidUsername",
                 OldPassword = "ValidOldPassword",
                 NewPassword = "ValidNewPassword"
             };

@@ -77,7 +77,7 @@ namespace AuthenticationService.Application.Validation.Abstractions
         {
             var user = new AuthenticationUserDto()
             {
-                Username = changePassword.Username,
+                UserName = changePassword.UserName,
                 Password = changePassword.OldPassword
             };
 

@@ -13,7 +13,7 @@ namespace AuthenticationService.Application.Commands
         public ChangeUserPasswordCommand(ChangeUserPasswordDto changePassword) : base(changePassword) { }
     }
 
-    class ChangeUserPasswordCommandHandler : IRequestHandler<ChangeUserPasswordCommand, IdentityResult>
+    public class ChangeUserPasswordCommandHandler : IRequestHandler<ChangeUserPasswordCommand, IdentityResult>
     {
         private readonly UserManager<User> _userManager;
 
@@ -24,12 +24,11 @@ namespace AuthenticationService.Application.Commands
 
         public async Task<IdentityResult> Handle(ChangeUserPasswordCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByNameAsync(request.Entity.Username);
-
-            var result = await _userManager.ChangePasswordAsync(
+            var user = await _userManager.FindByNameAsync(request.Entity.UserName);
+            var resultChanging = await _userManager.ChangePasswordAsync(
                 user, request.Entity.OldPassword, request.Entity.NewPassword);
 
-            return result;
+            return resultChanging;
         }
     }
 }

@@ -28,7 +28,7 @@ namespace AuthenticationService.Services
 
         public async Task<bool> ValidateUser(AuthenticationUserDto userForAuth)
         {
-            _user = await _userManager.FindByNameAsync(userForAuth.Username);
+            _user = await _userManager.FindByNameAsync(userForAuth.UserName);
 
             return _user != null && await _userManager.CheckPasswordAsync(_user, userForAuth.Password);
         }

@@ -20,7 +20,7 @@ namespace AuthenticationService.Application.Validation
                 .NotNull()
                 .WithMessage(cmd => "Entity is invalid");
 
-            RuleFor(cmd => cmd.Entity.Username)
+            RuleFor(cmd => cmd.Entity.UserName)
                 .Must(_validateConditions.IsNotNullOrWhitespace)
                 .WithMessage(cmd => "Username is required field");
 

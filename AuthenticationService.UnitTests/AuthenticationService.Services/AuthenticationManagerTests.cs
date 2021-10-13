@@ -10,9 +10,9 @@ namespace AuthenticationService.UnitTests.AuthenticationService.Services
 {
     public class AuthenticationManagerTests
     {
-        Mock<IConfiguration> _configuration = new Mock<IConfiguration>();
-        Mock<UserManager<User>> _userManager;
-        AuthenticationManager _authManager;
+        private Mock<IConfiguration> _configuration = new Mock<IConfiguration>();
+        private Mock<UserManager<User>> _userManager;
+        private AuthenticationManager _authManager;
 
         public AuthenticationManagerTests()
         {

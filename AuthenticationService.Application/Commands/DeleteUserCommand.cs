@@ -14,7 +14,7 @@ namespace AuthenticationService.Application.Commands
         public DeleteUserCommand(AuthenticationUserDto userAuthentication) : base(userAuthentication) { }
     }
 
-    class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, IdentityResult>
+    public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, IdentityResult>
     {
         private readonly IAuthenticationManager _authenticationManager;
         private readonly UserManager<User> _userManager;
@@ -29,10 +29,10 @@ namespace AuthenticationService.Application.Commands
 
         public async Task<IdentityResult> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var userForDelete = await _userManager.FindByNameAsync(request.Entity.Username);
-            var result = await _userManager.DeleteAsync(userForDelete);
+            var userForDelete = await _userManager.FindByNameAsync(request.Entity.UserName);
+            var resultDeleting = await _userManager.DeleteAsync(userForDelete);
 
-            return result;
+            return resultDeleting;
         }
     }
 }

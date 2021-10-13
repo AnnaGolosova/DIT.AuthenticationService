@@ -15,7 +15,7 @@ namespace AuthenticationService.Application.Commands
         public AuthenticateUserCommand(AuthenticationUserDto userAuthentication) : base(userAuthentication) { }
     }
 
-    class AuthenticateUserCommandHandler : IRequestHandler<AuthenticateUserCommand, AuthenticationResponseDto>
+    public class AuthenticateUserCommandHandler : IRequestHandler<AuthenticateUserCommand, AuthenticationResponseDto>
     {
         private readonly IAuthenticationManager _authenticationManager;
         private readonly UserManager<User> _userManager;
@@ -30,7 +30,12 @@ namespace AuthenticationService.Application.Commands
 
         public async Task<AuthenticationResponseDto> Handle(AuthenticateUserCommand request, CancellationToken cancellationToken)
         {
-            var userForRoles = await _userManager.FindByNameAsync(request.Entity.Username);
+            var userForRoles = await _userManager.FindByNameAsync(request.Entity.UserName);
+            if (userForRoles == null)
+            {
+                return null;
+            }
+
             var roles = await _userManager.GetRolesAsync(userForRoles);
             var token = await _authenticationManager.CreateToken();
 
