@@ -24,17 +24,17 @@ namespace AuthenticationService.Application.Validation
                 .Must(_validateConditions.IsNotNullOrWhitespace)
                 .WithMessage(cmd => "Username is required field");
 
-            RuleFor(cmd => cmd.Entity)
-                .Must(_validateConditions.IsValidAuthenticate)
-                .WithMessage(cmd => "Wrong username or password");
-
             RuleFor(cmd => cmd.Entity.OldPassword)
                 .Must(_validateConditions.IsValidPassword)
-                .WithMessage(cmd => "Password must contain upper letter and digit");
+                .WithMessage(cmd => "Old password must contain upper letter and digit");
 
             RuleFor(cmd => cmd.Entity.NewPassword)
                 .Must(_validateConditions.IsValidPassword)
-                .WithMessage(cmd => "Password must contain upper letter and digit");
+                .WithMessage(cmd => "New password must contain upper letter and digit");
+
+            RuleFor(cmd => cmd.Entity)
+                .Must(_validateConditions.IsValidAuthenticate)
+                .WithMessage(cmd => "Wrong username or password");
         }
     }
 }
