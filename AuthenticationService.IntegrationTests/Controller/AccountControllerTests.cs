@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Text;
 using Xunit;
 
-namespace IntegrationTests.Controller
+namespace AuthenticatioService.IntegrationTests.Controller
 {
     public class AccountControllerTests
     {
@@ -87,46 +87,5 @@ namespace IntegrationTests.Controller
             Assert.Equal(HttpStatusCode.BadRequest, responseRepeatRegisterUser.StatusCode);
         }
 
-        [Fact]
-        public async void RegisterUser_InvalidRoles_BadRequest()
-        {
-            var createUser = new RegistrationUserDto()
-            {
-                UserName = "TestRoles1",
-                Password = "TestRoles1",
-                Email = "TestRoles1@string.com",
-                Roles = new string[] { "Administrators", "InvalidRole" }
-            };
-            var contentRequest = new StringContent(JsonConvert.SerializeObject(createUser),
-                Encoding.UTF8, "application/json");
-
-            var responseRegisterUser = await TestFixture.Client.PostAsync($"/api/account/register", contentRequest);
-
-            var exceptedErrorMessage = "Invalid roles. Possible roles: Administrator, Moderator and User";
-
-            Assert.Contains(exceptedErrorMessage, await responseRegisterUser.Content.ReadAsStringAsync());
-            Assert.Equal(HttpStatusCode.BadRequest, responseRegisterUser.StatusCode);
-        }
-
-        [Fact]
-        public async void RegisterUser_EmptyUsername_BadRequest()
-        {
-            var createUser = new RegistrationUserDto()
-            {
-                UserName = "",
-                Password = "EmptyUsername",
-                Email = "EmptyUsername@string.com",
-                Roles = new string[] { "Administrator" }
-            };
-            var contentRequest = new StringContent(JsonConvert.SerializeObject(createUser),
-                Encoding.UTF8, "application/json");
-
-            var responseRegisterUser = await TestFixture.Client.PostAsync($"/api/account/register", contentRequest);
-
-            var exceptedErrorMessage = "Username is required field";
-
-            Assert.Contains(exceptedErrorMessage, await responseRegisterUser.Content.ReadAsStringAsync());
-            Assert.Equal(HttpStatusCode.BadRequest, responseRegisterUser.StatusCode);
-        }
     }
 }
