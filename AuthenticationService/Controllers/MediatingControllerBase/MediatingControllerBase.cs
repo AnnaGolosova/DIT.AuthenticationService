@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AuthenticationService.Infrastructure;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -47,7 +48,7 @@ namespace AuthenticationService.Controllers
 
                 if (response == null)
                 {
-                    throw new Exception("Error processing request");
+                    return InternalServerError();
                 }
 
                 return Ok(response);
@@ -57,6 +58,10 @@ namespace AuthenticationService.Controllers
                 if (ex.Message.Contains("Wrong username or password"))
                 {
                     return NotFound("Wrong username or password");
+                }
+                else if (ex.Message.Contains("Invalid connection to DB"))
+                {
+                    return InternalServerError();
                 }
 
                 return BadRequest(ex.Message);
@@ -87,7 +92,7 @@ namespace AuthenticationService.Controllers
 
                 if (response == null)
                 {
-                    throw new Exception("Error processing request");
+                    return InternalServerError();
                 }
 
                 return Ok(response);
@@ -97,6 +102,10 @@ namespace AuthenticationService.Controllers
                 if (ex.Message.Contains("Wrong username or password"))
                 {
                     return NotFound("Wrong username or password");
+                }
+                else if (ex.Message.Contains("Invalid connection to DB"))
+                {
+                    return InternalServerError();
                 }
 
                 return BadRequest(ex.Message);
