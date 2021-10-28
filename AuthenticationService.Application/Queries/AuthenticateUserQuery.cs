@@ -30,18 +30,20 @@ namespace AuthenticationService.Application.Queries
 
         public async Task<AuthenticationResponseDto> Handle(AuthenticateUserQuery request, CancellationToken cancellationToken)
         {
-            var userForRoles = await _userManager.FindByNameAsync(request.Entity.UserName);
-            if (userForRoles == null)
+            var user = await _userManager.FindByNameAsync(request.Entity.UserName);
+            if (user == null)
             {
                 return null;
             }
 
-            var roles = await _userManager.GetRolesAsync(userForRoles);
+            var roles = await _userManager.GetRolesAsync(user);
             var token = await _authenticationManager.CreateToken();
 
             var authenticationResponse = new AuthenticationResponseDto()
             {
-                Token = token,
+                UserId = user.Id,
+                UserName = user.UserName,
+                AccessToken = token,
                 Roles = roles
             };
 

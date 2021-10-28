@@ -60,7 +60,7 @@ namespace AuthenticationService.UnitTests.AuthenticationService.Application.Quer
             var exceptedRoles = new List<string>() { "User", "Moderator" };
 
             Assert.Equal(exceptedRoles, handleResult.Roles.ToList());
-            Assert.Equal(exceptedToken, handleResult.Token);
+            Assert.Equal(exceptedToken, handleResult.AccessToken);
         }
 
         [Fact]
@@ -83,7 +83,7 @@ namespace AuthenticationService.UnitTests.AuthenticationService.Application.Quer
             var exceptedToken = "TestToken";
 
             Assert.Null(handleResult.Roles);
-            Assert.Equal(exceptedToken, handleResult.Token);
+            Assert.Equal(exceptedToken, handleResult.AccessToken);
         }
     }
 }
