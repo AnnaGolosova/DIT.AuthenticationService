@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace AuthenticationService.Application.Queries
 {
-    public class AuthenticateUserQuery : BaseCommand<AuthenticationUserDto, AuthenticationResponseDto>
+    public class AuthenticateUserQuery : BaseCommand<AuthenticationUserDto, AuthenticationResponse>
     {
         public AuthenticateUserQuery(AuthenticationUserDto userAuthentication) : base(userAuthentication) { }
     }
 
-    public class AuthenticateUserQueryHandler : IRequestHandler<AuthenticateUserQuery, AuthenticationResponseDto>
+    public class AuthenticateUserQueryHandler : IRequestHandler<AuthenticateUserQuery, AuthenticationResponse>
     {
         private readonly IAuthenticationManager _authenticationManager;
         private readonly UserManager<User> _userManager;
@@ -28,7 +28,7 @@ namespace AuthenticationService.Application.Queries
             _userManager = userManager;
         }
 
-        public async Task<AuthenticationResponseDto> Handle(AuthenticateUserQuery request, CancellationToken cancellationToken)
+        public async Task<AuthenticationResponse> Handle(AuthenticateUserQuery request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByNameAsync(request.Entity.UserName);
             if (user == null)
@@ -39,7 +39,7 @@ namespace AuthenticationService.Application.Queries
             var roles = await _userManager.GetRolesAsync(user);
             var token = await _authenticationManager.CreateToken();
 
-            var authenticationResponse = new AuthenticationResponseDto()
+            var authenticationResponse = new AuthenticationResponse()
             {
                 UserId = user.Id,
                 UserName = user.UserName,

@@ -2,7 +2,7 @@
 
 namespace AuthenticationService.Contracts.Outgoing
 {
-    public class AuthenticationResponseDto
+    public class AuthenticationResponse
     {
         public string UserId { get; set; }
 

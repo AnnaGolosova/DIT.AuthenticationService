@@ -1,7 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,7 +28,7 @@ namespace AuthenticationService.Controllers
         }
 
         protected async Task<IActionResult> ExecuteQueryAsync<TResult>(IRequest<TResult> query,
-            string notFoundMessage = null, CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             if (query == null)
             {
@@ -34,7 +37,8 @@ namespace AuthenticationService.Controllers
 
             if (!ModelState.IsValid)
             {
-                return BadRequest("Invalid data provided");
+                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+                return BadRequest(allErrors);
             }
 
             try
@@ -60,7 +64,7 @@ namespace AuthenticationService.Controllers
         }
 
         protected async Task<IActionResult> ExecuteCommandAsync<TResult>(IRequest<TResult> command,
-            string notFoundMessage = null, CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken = default)
         {
             if (command == null)
             {
@@ -69,7 +73,8 @@ namespace AuthenticationService.Controllers
 
             if (!ModelState.IsValid)
             {
-                return BadRequest("Invalid data provided");
+                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+                return BadRequest(allErrors);
             }
 
             try

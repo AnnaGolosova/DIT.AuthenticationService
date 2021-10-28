@@ -16,8 +16,8 @@ namespace AuthenticationService.UnitTests.AuthenticationService.Application.Vali
 {
     public class AuthenticationValidatorTests
     {
-        private ValidationBehavior<AuthenticateUserQuery, AuthenticationResponseDto> _validationBehavior;
-        private Mock<RequestHandlerDelegate<AuthenticationResponseDto>> _next;
+        private ValidationBehavior<AuthenticateUserQuery, AuthenticationResponse> _validationBehavior;
+        private Mock<RequestHandlerDelegate<AuthenticationResponse>> _next;
         private Mock<AuthenticateUserQuery> _AuthenticateUserQuery;
         private Mock<IValidationConditions> _validateConditions;
         private AuthenticationUserDto _authenticationUser;
@@ -32,9 +32,9 @@ namespace AuthenticationService.UnitTests.AuthenticationService.Application.Vali
                 new AuthenticationValidator(_validateConditions.Object)
             };
 
-            _validationBehavior = new ValidationBehavior<AuthenticateUserQuery, AuthenticationResponseDto>(
+            _validationBehavior = new ValidationBehavior<AuthenticateUserQuery, AuthenticationResponse>(
                 authenticationValidator);
-            _next = new Mock<RequestHandlerDelegate<AuthenticationResponseDto>>();
+            _next = new Mock<RequestHandlerDelegate<AuthenticationResponse>>();
 
             SetBaseSetups();
         }

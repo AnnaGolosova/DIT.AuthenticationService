@@ -15,7 +15,7 @@ namespace AuthenticationService.Controllers
 
         [HttpPost("register")]
         /// <summary> Create a new user account </summary>
-        /// <param name="registerUser"></param>
+        /// <params name="registerUser"></param>
         public async Task<IActionResult> RegisterUser([FromBody] RegistrationUserDto registerUser,
             CancellationToken cancellationToken) =>
             await ExecuteCommandAsync(new RegisterUserCommand(registerUser), cancellationToken: cancellationToken);
